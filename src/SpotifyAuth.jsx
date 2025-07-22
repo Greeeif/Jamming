@@ -35,7 +35,7 @@ const SpotifyAuth = () => {
         scope: 'user-read-private user-read-email',
         code_challenge_method: 'S256',
         code_challenge: codeChallenge,
-        redirect_uri: 'https://jamming-kzm9x3gg0-greeifs-projects.vercel.app/',
+        redirect_uri: 'https://jamming-teal.vercel.app/',
       }
 
       const authUrl = new URL("https://accounts.spotify.com/authorize")
