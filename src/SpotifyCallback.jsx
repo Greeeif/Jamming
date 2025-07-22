@@ -35,7 +35,7 @@ const SpotifyCallback = () => {
             client_id: 'YOUR_CLIENT_ID',
             grant_type: 'authorization_code',
             code,
-            redirect_uri: 'https://jamming-kzm9x3gg0-greeifs-projects.vercel.app/',
+            redirect_uri: 'https://jamming-teal.vercel.app/',
             code_verifier: codeVerifier,
           }),
         });
