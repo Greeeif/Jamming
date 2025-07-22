@@ -49,7 +49,7 @@ const SpotifyCallback = () => {
 
           const userResponse = await fetch('https://api.spotify.com/v1/me', {
             headers: {
-              'Authorization': `Bearer ${tokenData.access_token}`
+              'Authorization': `Bearer ${data.access_token}`
             }
           });
 
@@ -62,7 +62,7 @@ const SpotifyCallback = () => {
             setStatus(`Login successful! Welcome ${userData.display_name || userData.id}!`);
 
           } else {
-            setStatus('Token exchange failed: ' + (tokenData.error_description || 'Unknown error'));
+            setStatus('Token exchange failed: ' + (data.error_description || 'Unknown error'));
           }
 
         }
