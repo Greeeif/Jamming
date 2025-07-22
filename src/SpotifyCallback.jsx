@@ -9,7 +9,7 @@ const SpotifyCallback = () => {
         // Get the code from URL
         const urlParams = new URLSearchParams(window.location.search);
         const code = urlParams.get('code');
-        
+
         if (!code) {
           setStatus('No authorization code found');
           return;
@@ -17,11 +17,13 @@ const SpotifyCallback = () => {
 
         // Get the stored verifier
         const codeVerifier = localStorage.getItem('code_verifier');
-        
+
         if (!codeVerifier) {
           setStatus('Code verifier not found');
           return;
         }
+
+        setStatus('Exchanging code for access token...');
 
         // Your existing token exchange code
         const response = await fetch("https://accounts.spotify.com/api/token", {
@@ -39,14 +41,31 @@ const SpotifyCallback = () => {
         });
 
         const data = await response.json();
-        
+
         if (data.access_token) {
           localStorage.setItem('access_token', data.access_token);
-          setStatus('Login successful! You can now use the Spotify API.');
-        } else {
-          setStatus('Token exchange failed');
-        }
 
+          setStatus('Getting user Info...');
+
+          const userResponse = await fetch('https://api.spotify.com/v1/me', {
+            headers: {
+              'Authorization': `Bearer ${tokenData.access_token}`
+            }
+          });
+
+          if (userResponse.ok) {
+            const userData = await userResponse.json();
+
+            localStorage.setItem('spotify_user_id', userData.id);
+            localStorage.setItem('spotify_user_info', JSON.stringify(userData));
+
+            setStatus(`Login successful! Welcome ${userData.display_name || userData.id}!`);
+
+          } else {
+            setStatus('Token exchange failed: ' + (tokenData.error_description || 'Unknown error'));
+          }
+
+        }
       } catch (error) {
         setStatus('Error: ' + error.message);
       }
@@ -55,7 +74,12 @@ const SpotifyCallback = () => {
     handleCallback();
   }, []);
 
-  return <div>{status}</div>;
+  return (
+    <div style={{ padding: '20px', textAlign: 'center' }}>
+      <h2>Spotify Authentication</h2>
+      <p>{status}</p>
+    </div>
+  );
 };
 
 export default SpotifyCallback;

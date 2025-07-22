@@ -12,6 +12,9 @@ function App() {
   // Add this line - you were missing it!
   const urlParams = new URLSearchParams(window.location.search);
   const isCallback = urlParams.has('code');
+  const [playlistName, setPlaylistName] = useState('');
+  const [playlistDescription, setPlaylistDescription] = useState('');
+  
 
   return (
     <>
