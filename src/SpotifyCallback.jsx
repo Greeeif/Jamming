@@ -32,7 +32,7 @@ const SpotifyCallback = () => {
             'Content-Type': 'application/x-www-form-urlencoded',
           },
           body: new URLSearchParams({
-            client_id: 'YOUR_CLIENT_ID',
+            client_id: 'b6215e6ae38640a0a70c832d155200b0',
             grant_type: 'authorization_code',
             code,
             redirect_uri: 'https://jamming-teal.vercel.app/',
