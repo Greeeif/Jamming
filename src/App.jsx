@@ -38,35 +38,44 @@ function App() {
     setAuthData({ accessToken: null, userId: null, userInfo: null });
   };
 
-  
-  return (
-    <div style={{ padding: '20px', maxWidth: '600px', margin: '0 auto' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
-        <h1>Spotify Playlist Creator</h1>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-          {authData.userInfo && (
-            <span>Welcome, {authData.userInfo.display_name || authData.userId}!</span>
-          )}
-          <button 
-            onClick={handleLogout}
-            style={{
-              padding: '5px 15px',
-              backgroundColor: '#f44336',
-              color: 'white',
-              border: 'none',
-              borderRadius: '15px',
-              cursor: 'pointer',
-              fontSize: '12px'
-            }}
-          >
-            Logout
-          </button>
-        </div>
-      </div>
 
-      <h2>Create New Playlist</h2>
-      
-      <div style={{ marginBottom: '20px' }}>
+  return (
+    <>
+      <div>
+        <a href="https://vite.dev" target="_blank">
+          <img src={viteLogo} className="logo" alt="Vite logo" />
+        </a>
+        <a href="https://react.dev" target="_blank">
+          <img src={reactLogo} className="logo react" alt="React logo" />
+        </a>
+      </div>
+      <h1>Vite + React</h1>
+      <button
+        onClick={handleLogout}
+        style={{
+          padding: '5px 15px',
+          backgroundColor: '#f44336',
+          color: 'white',
+          border: 'none',
+          borderRadius: '15px',
+          cursor: 'pointer',
+          fontSize: '12px'
+        }}
+      >
+        Logout
+      </button>
+      <div className="card">
+        <Playlist
+          name={playlistData.name}
+          description={playlistData.description}
+          user_id={authData.userID}
+          accessToken={authData.accessToken}>
+          Create playlist
+        </Playlist>
+        <p>
+          Edit <code>src/App.jsx</code> and save to test HMR
+        </p>
+        <div style={{ marginBottom: '20px' }}>
         <div style={{ marginBottom: '15px' }}>
           <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>
             Playlist Name *
@@ -112,30 +121,15 @@ function App() {
           />
         </div>
       </div>
-
-      {/* Your Playlist component */}
-      <Playlist 
-        name={playlistData.name}
-        description={playlistData.description}
-        user_id={authData.userId}
-        accessToken={authData.accessToken}
-      />
-
-      {/* Debug info - you can remove this later */}
-      <div style={{ 
-        marginTop: '30px', 
-        padding: '15px', 
-        backgroundColor: '#f5f5f5',
-        borderRadius: '4px',
-        fontSize: '12px',
-        color: '#666'
-      }}>
-        <strong>Debug Info:</strong><br/>
-        User ID: {authData.userId}<br/>
-        Has Access Token: {authData.accessToken ? 'Yes' : 'No'}
       </div>
-    </div>
-  );
+      <p className="read-the-docs">
+        Click on the Vite and React logos to learn more
+      </p>
+      <div>
+        {isCallback ? <SpotifyCallback /> : <SpotifyAuth />}
+      </div>
+    </>
+  )
 }
 
 export default App
