@@ -32,7 +32,7 @@ const SpotifyAuth = () => {
       const params = {
         response_type: 'code',
         client_id: 'b6215e6ae38640a0a70c832d155200b0',
-        scope: 'user-read-private user-read-email',
+        scope: 'user-read-private user-read-email playlist-modify-public playlist-modify-private',
         code_challenge_method: 'S256',
         code_challenge: codeChallenge,
         redirect_uri: 'https://jamming-teal.vercel.app/',
