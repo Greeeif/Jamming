@@ -56,3 +56,5 @@ const UserPlaylists = ({ accessToken }) => {
     </div>
   );
 };
+
+export default UserPlaylists;

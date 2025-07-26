@@ -5,6 +5,7 @@ import './App.css'
 import SpotifyAuth from './SpotifyAuth'
 import SpotifyCallback from './SpotifyCallback'
 import Playlist from './Playlist'
+import UserPlaylists from './UserPlaylists'
 
 function App() {
   const urlParams = new URLSearchParams(window.location.search);
@@ -126,6 +127,9 @@ function App() {
             {/* Debug info */}
             <div style={{ marginTop: '20px', fontSize: '12px', color: '#666' }}>
               Debug: User ID: {authData.userID}, Has Token: {authData.accessToken ? 'Yes' : 'No'}
+            </div>
+            <div>
+              <UserPlaylists accessToken={authData.accessToken} />
             </div>
           </>
         ) : (
