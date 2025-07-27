@@ -6,6 +6,7 @@ import SpotifyAuth from './SpotifyAuth'
 import SpotifyCallback from './SpotifyCallback'
 import Playlist from './Playlist'
 import UserPlaylists from './UserPlaylists'
+import SearchBar from './SearchBar'
 
 function App() {
   const urlParams = new URLSearchParams(window.location.search);
@@ -45,7 +46,7 @@ function App() {
   return (
     <>
       <h1>Let's Jam</h1>
-      
+
       {/* Show logout button only if authenticated */}
       {isAuthenticated && (
         <button
@@ -63,7 +64,7 @@ function App() {
           Logout
         </button>
       )}
-
+      <SearchBar></SearchBar>
       <div className="card">
         {/* Show form and playlist component only if authenticated */}
         {isAuthenticated ? (
@@ -74,39 +75,39 @@ function App() {
                 <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>
                   Playlist Name *
                 </label>
-                <input 
-                  type="text" 
+                <input
+                  type="text"
                   placeholder="Enter playlist name"
                   value={playlistData.name}
                   onChange={(e) => setPlaylistData(prev => ({
-                    ...prev, 
+                    ...prev,
                     name: e.target.value
                   }))}
-                  style={{ 
-                    width: '100%', 
-                    padding: '10px', 
-                    borderRadius: '4px', 
+                  style={{
+                    width: '100%',
+                    padding: '10px',
+                    borderRadius: '4px',
                     border: '1px solid #ccc',
                     fontSize: '14px'
                   }}
                 />
               </div>
-              
+
               <div style={{ marginBottom: '20px' }}>
                 <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>
                   Description (optional)
                 </label>
-                <textarea 
+                <textarea
                   placeholder="Enter playlist description"
                   value={playlistData.description}
                   onChange={(e) => setPlaylistData(prev => ({
-                    ...prev, 
+                    ...prev,
                     description: e.target.value
                   }))}
-                  style={{ 
-                    width: '100%', 
-                    padding: '10px', 
-                    borderRadius: '4px', 
+                  style={{
+                    width: '100%',
+                    padding: '10px',
+                    borderRadius: '4px',
                     border: '1px solid #ccc',
                     minHeight: '80px',
                     fontSize: '14px',
