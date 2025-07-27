@@ -11,7 +11,7 @@ const UserPlaylists = ({ accessToken }) => {
 
         // api call to get user playlists
         try {
-            const response = await fetch(`https://api.spotify.com/v1/me/playlists`, {
+            const response = await fetch(`https://api.spotify.com/v1/me/playlists?Limit=10`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${accessToken}`,
