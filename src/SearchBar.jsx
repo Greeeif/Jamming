@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 
 const SearchBar = ({ accessToken, onTracksFound }) => {
     const [search, setSearch] = useState('');
-    const [tracks, setTracks] = useState([]);
     const [loading, setLoading] = useState(false);
 
     const searchSong = async () => {
@@ -23,15 +22,18 @@ const SearchBar = ({ accessToken, onTracksFound }) => {
             if (response.ok) {
                 const data = await response.json();
                 const foundTracks = data.tracks.items;
-                setTracks(foundTracks);
                 
-                // Pass results to parent component if callback provided
+                // Pass results to parent component
                 if (onTracksFound) {
                     onTracksFound(foundTracks);
                 }
             }
         } catch (error) {
             console.error('Error fetching tracks:', error);
+            // Pass empty array on error
+            if (onTracksFound) {
+                onTracksFound([]);
+            }
         } finally {
             setLoading(false);
         }
@@ -42,6 +44,11 @@ const SearchBar = ({ accessToken, onTracksFound }) => {
         const timer = setTimeout(() => {
             if (search.trim() && accessToken) {
                 searchSong();
+            } else if (!search.trim()) {
+                // Clear results when search is empty
+                if (onTracksFound) {
+                    onTracksFound([]);
+                }
             }
         }, 300);
 
@@ -56,12 +63,15 @@ const SearchBar = ({ accessToken, onTracksFound }) => {
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder={loading ? "Searching..." : "Search for songs..."}
                 disabled={loading}
+                style={{
+                    width: '100%',
+                    padding: '10px',
+                    borderRadius: '4px',
+                    border: '1px solid #ccc',
+                    fontSize: '14px',
+                    marginBottom: '10px'
+                }}
             />
-            
-            {/* Optional: Display search results count */}
-            {tracks.length > 0 && (
-                <p>{tracks.length} tracks found</p>
-            )}
         </div>
     );
 };

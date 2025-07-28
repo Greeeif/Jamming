@@ -68,10 +68,17 @@ function App() {
         {/* Show form and playlist component only if authenticated */}
         {isAuthenticated ? (
           <>
-            <SearchBar
-              accessToken={authData.accessToken}
-              onTracksFound={(tracks) => console.log('Found tracks:', tracks)}
-            />
+            <div style={{ marginBottom: '20px' }}>
+              <SearchBar
+                accessToken={authData.accessToken}
+                onTracksFound={handleTracksFound}
+              />
+              <SearchResults
+                tracks={searchResults}
+                onTrackSelect={handleTrackSelect}
+                loading={isSearching}
+              />
+            </div>
             {/* Form inputs BEFORE the Playlist component */}
             <div style={{ marginBottom: '20px' }}>
               <div style={{ marginBottom: '15px' }}>
