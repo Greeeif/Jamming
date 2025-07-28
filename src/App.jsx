@@ -7,11 +7,12 @@ import SpotifyCallback from './SpotifyCallback'
 import Playlist from './Playlist'
 import UserPlaylists from './UserPlaylists'
 import SearchBar from './SearchBar'
+import SearchResults from './SearchResults' // ✅ ADD THIS IMPORT
 
 function App() {
   const urlParams = new URLSearchParams(window.location.search);
   const isCallback = urlParams.has('code');
-  const [isAuthenticated, setIsAuthenticated] = useState(false); // Added this
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [authData, setAuthData] = useState({
     accessToken: null,
     userID: null,
@@ -20,6 +21,10 @@ function App() {
     name: '',
     description: ''
   });
+
+  // ✅ ADD THESE MISSING STATE VARIABLES
+  const [searchResults, setSearchResults] = useState([]);
+  const [isSearching, setIsSearching] = useState(false);
 
   useEffect(() => {
     const accessToken = localStorage.getItem('access_token');
@@ -30,7 +35,7 @@ function App() {
         accessToken,
         userID
       });
-      setIsAuthenticated(true); // Added this
+      setIsAuthenticated(true);
     }
   }, []);
 
@@ -40,7 +45,19 @@ function App() {
     localStorage.removeItem('spotify_user_info');
     localStorage.removeItem('code_verifier');
     setIsAuthenticated(false);
-    setAuthData({ accessToken: null, userID: null }); // Fixed variable name
+    setAuthData({ accessToken: null, userID: null });
+    setSearchResults([]); // Clear search results on logout
+  };
+
+  // ✅ ADD THESE MISSING HANDLER FUNCTIONS
+  const handleTracksFound = (tracks) => {
+    setSearchResults(tracks);
+    setIsSearching(false);
+  };
+
+  const handleTrackSelect = (track) => {
+    console.log('Selected track:', track);
+    // You can add logic here to add tracks to playlist, etc.
   };
 
   return (
