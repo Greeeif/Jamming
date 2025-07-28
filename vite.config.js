@@ -8,7 +8,7 @@ export default defineConfig({
     port: 5173,
     allowedHosts: [
       'localhost',
-      '.loca.lt',  // This allows any loca.lt subdomain
+      '.loca.lt'
     ]
   }
 })
