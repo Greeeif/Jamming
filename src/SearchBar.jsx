@@ -50,7 +50,7 @@ const SearchBar = ({ accessToken, onTracksFound }) => {
                     onTracksFound([]);
                 }
             }
-        }, 300);
+        }, 1000);
 
         return () => clearTimeout(timer);
     }, [search, accessToken]);
@@ -61,8 +61,7 @@ const SearchBar = ({ accessToken, onTracksFound }) => {
                 type="text"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                placeholder={loading ? "Searching..." : "Search for songs..."}
-                disabled={loading}
+                placeholder="Search for songs..."
                 style={{
                     width: '100%',
                     padding: '10px',
