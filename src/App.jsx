@@ -64,7 +64,10 @@ function App() {
           Logout
         </button>
       )}
-      <SearchBar></SearchBar>
+      <SearchBar
+        accessToken={yourAccessToken}
+        onTracksFound={(tracks) => console.log('Found tracks:', tracks)}
+      />
       <div className="card">
         {/* Show form and playlist component only if authenticated */}
         {isAuthenticated ? (
