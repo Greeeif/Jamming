@@ -27,7 +27,7 @@ const SearchResults = ({ tracks, onTrackSelect, loading }) => {
                 borderBottom: '1px solid #ddd',
                 fontWeight: 'bold'
             }}>
-                {tracks.length} track{tracks.length !== 1 ? 's' : ''} found
+                {tracks.length} track{tracks.length !== 1 ? 's' : ''} found - Click to add to playlist
             </div>
             
             {tracks.map((track) => (
@@ -41,11 +41,9 @@ const SearchResults = ({ tracks, onTrackSelect, loading }) => {
                         display: 'flex',
                         alignItems: 'center',
                         gap: '12px',
-                        ':hover': {
-                            backgroundColor: '#f9f9f9'
-                        }
+                        transition: 'background-color 0.2s ease'
                     }}
-                    onMouseEnter={(e) => e.target.style.backgroundColor = '#f9f9f9'}
+                    onMouseEnter={(e) => e.target.style.backgroundColor = '#f0f8ff'}
                     onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}
                 >
                     {/* Album artwork */}
@@ -97,13 +95,30 @@ const SearchResults = ({ tracks, onTrackSelect, loading }) => {
                         </div>
                     </div>
                     
-                    {/* Duration */}
+                    {/* Duration and Add button */}
                     <div style={{
-                        color: '#666',
-                        fontSize: '12px',
-                        flexShrink: 0
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '10px'
                     }}>
-                        {Math.floor(track.duration_ms / 60000)}:{String(Math.floor((track.duration_ms % 60000) / 1000)).padStart(2, '0')}
+                        <div style={{
+                            color: '#666',
+                            fontSize: '12px',
+                            flexShrink: 0
+                        }}>
+                            {Math.floor(track.duration_ms / 60000)}:{String(Math.floor((track.duration_ms % 60000) / 1000)).padStart(2, '0')}
+                        </div>
+                        
+                        <div style={{
+                            padding: '4px 8px',
+                            backgroundColor: '#1db954',
+                            color: 'white',
+                            borderRadius: '12px',
+                            fontSize: '11px',
+                            fontWeight: 'bold'
+                        }}>
+                            + ADD
+                        </div>
                     </div>
                 </div>
             ))}

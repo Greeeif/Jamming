@@ -7,7 +7,8 @@ import SpotifyCallback from './SpotifyCallback'
 import Playlist from './Playlist'
 import UserPlaylists from './UserPlaylists'
 import SearchBar from './SearchBar'
-import SearchResults from './SearchResults' // ✅ ADD THIS IMPORT
+import SearchResults from './SearchResults'
+import Tracklist from './Tracklist'
 
 function App() {
   const urlParams = new URLSearchParams(window.location.search);
@@ -22,9 +23,9 @@ function App() {
     description: ''
   });
 
-  // ✅ ADD THESE MISSING STATE VARIABLES
   const [searchResults, setSearchResults] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
+  const [selectedTracks, setSelectedTracks] = useState([]); // NEW: Track list for playlist
 
   useEffect(() => {
     const accessToken = localStorage.getItem('access_token');
@@ -46,10 +47,10 @@ function App() {
     localStorage.removeItem('code_verifier');
     setIsAuthenticated(false);
     setAuthData({ accessToken: null, userID: null });
-    setSearchResults([]); // Clear search results on logout
+    setSearchResults([]);
+    setSelectedTracks([]); // Clear selected tracks on logout
   };
 
-  // ✅ ADD THESE MISSING HANDLER FUNCTIONS
   const handleTracksFound = (tracks) => {
     setSearchResults(tracks);
     setIsSearching(false);
@@ -57,14 +58,28 @@ function App() {
 
   const handleTrackSelect = (track) => {
     console.log('Selected track:', track);
-    // You can add logic here to add tracks to playlist, etc.
+    // Check if track is already in the list
+    const isAlreadySelected = selectedTracks.some(selectedTrack => selectedTrack.id === track.id);
+    
+    if (!isAlreadySelected) {
+      setSelectedTracks(prev => [...prev, track]);
+    } else {
+      alert('This track is already in your playlist!');
+    }
+  };
+
+  const removeTrack = (trackId) => {
+    setSelectedTracks(prev => prev.filter(track => track.id !== trackId));
+  };
+
+  const clearTracklist = () => {
+    setSelectedTracks([]);
   };
 
   return (
     <>
       <h1>Let's Jam</h1>
 
-      {/* Show logout button only if authenticated */}
       {isAuthenticated && (
         <button
           onClick={handleLogout}
@@ -82,10 +97,11 @@ function App() {
         </button>
       )}
       <div className="card">
-        {/* Show form and playlist component only if authenticated */}
         {isAuthenticated ? (
           <>
+            {/* Search Section */}
             <div style={{ marginBottom: '20px' }}>
+              <h3>Search for Songs</h3>
               <SearchBar
                 accessToken={authData.accessToken}
                 onTracksFound={handleTracksFound}
@@ -96,8 +112,19 @@ function App() {
                 loading={isSearching}
               />
             </div>
-            {/* Form inputs BEFORE the Playlist component */}
+
+            {/* Tracklist Section */}
             <div style={{ marginBottom: '20px' }}>
+              <Tracklist 
+                tracks={selectedTracks}
+                onRemoveTrack={removeTrack}
+                onClearAll={clearTracklist}
+              />
+            </div>
+
+            {/* Playlist Creation Section */}
+            <div style={{ marginBottom: '20px' }}>
+              <h3>Create Playlist</h3>
               <div style={{ marginBottom: '15px' }}>
                 <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>
                   Playlist Name *
@@ -142,20 +169,26 @@ function App() {
                   }}
                 />
               </div>
-            </div>
 
-            {/* Playlist component */}
-            <Playlist
-              name={playlistData.name}
-              description={playlistData.description}
-              user_id={authData.userID}
-              accessToken={authData.accessToken}
-            />
+              <Playlist
+                name={playlistData.name}
+                description={playlistData.description}
+                user_id={authData.userID}
+                accessToken={authData.accessToken}
+                tracks={selectedTracks} // Pass selected tracks to playlist
+                onPlaylistCreated={() => {
+                  // Clear the form and tracklist after successful creation
+                  setPlaylistData({ name: '', description: '' });
+                  setSelectedTracks([]);
+                }}
+              />
+            </div>
 
             {/* Debug info */}
             <div style={{ marginTop: '20px', fontSize: '12px', color: '#666' }}>
               Debug: User ID: {authData.userID}, Has Token: {authData.accessToken ? 'Yes' : 'No'}
             </div>
+            
             <div>
               <UserPlaylists accessToken={authData.accessToken} />
             </div>
